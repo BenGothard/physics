@@ -1,0 +1,620 @@
+/* ============================================
+   PhysicsQuest — responsive.css
+   Responsive breakpoints, mobile nav,
+   touch-friendly sizing, layout adjustments
+   ============================================ */
+
+/* ============ VISIBILITY UTILITIES ============ */
+
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+
+/* ============ BOTTOM NAV (MOBILE) ============ */
+
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--bg-card);
+  border-top: 1px solid rgba(148, 163, 184, 0.08);
+  z-index: var(--z-sticky);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav__list {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  height: 100%;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  min-width: 44px;
+  min-height: 44px;
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.bottom-nav-item__icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.bottom-nav-item__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.bottom-nav-item.active {
+  color: var(--accent-blue);
+  transform: scale(1.05);
+}
+
+.bottom-nav-item:hover {
+  color: var(--text-primary);
+}
+
+
+/* ==========================================================
+   TABLET — max-width: 1024px
+   ========================================================== */
+
+@media (max-width: 1024px) {
+
+  /* Dashboard: 2-column layout */
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "hero       hero"
+      "courses    courses"
+      "streak     challenge"
+      "resume     resume"
+      "stats      stats";
+  }
+
+  .course-realms {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stats-overview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Lesson page: narrower sidebar */
+  .lesson-page__sidebar {
+    width: 250px;
+  }
+
+  /* Simulation: stacked layout */
+  .sim-layout {
+    flex-direction: column;
+  }
+
+  .sim-layout__side {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sim-layout__side > * {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  /* Skill tree legend and controls */
+  .tree-legend {
+    bottom: var(--space-lg);
+    left: var(--space-lg);
+    padding: var(--space-sm);
+  }
+
+  .tree-controls {
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+  }
+}
+
+
+/* ==========================================================
+   MOBILE — max-width: 768px
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+  /* --- Visibility --- */
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  /* --- Bottom nav --- */
+  .bottom-nav {
+    display: block;
+  }
+
+  /* --- Base typography --- */
+  h1 { font-size: var(--fs-2xl); }
+  h2 { font-size: var(--fs-xl); }
+  h3 { font-size: var(--fs-lg); }
+
+  /* --- Page container --- */
+  .page {
+    padding: var(--space-lg) var(--space-md);
+    padding-bottom: calc(60px + var(--space-lg) + env(safe-area-inset-bottom));
+  }
+
+  /* --- Dashboard --- */
+  .dashboard {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "hero"
+      "courses"
+      "streak"
+      "challenge"
+      "resume"
+      "stats";
+    padding: var(--space-lg) var(--space-md);
+    gap: var(--space-md);
+  }
+
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .hero-stats {
+    justify-content: center;
+  }
+
+  .hero-xp {
+    max-width: 100%;
+  }
+
+  .hero-info__name {
+    font-size: var(--fs-2xl);
+  }
+
+  .course-realms {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-overview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-ring {
+    width: 56px;
+    height: 56px;
+  }
+
+
+  /* --- Lesson page --- */
+  .lesson-page {
+    flex-direction: column;
+    padding: var(--space-lg) var(--space-md);
+    padding-bottom: calc(60px + var(--space-lg) + env(safe-area-inset-bottom));
+  }
+
+  .lesson-page__sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .lesson-header__title {
+    font-size: var(--fs-xl);
+  }
+
+  .lesson-progress {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .lesson-nav {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .lesson-nav__btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 120px;
+  }
+
+
+  /* --- Quiz --- */
+  .quiz-container {
+    padding: var(--space-lg) var(--space-md);
+    padding-bottom: calc(60px + var(--space-lg) + env(safe-area-inset-bottom));
+  }
+
+  .quiz-options {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-timer {
+    position: static;
+    margin: 0 0 var(--space-md) auto;
+    width: 48px;
+    height: 48px;
+    font-size: var(--fs-base);
+  }
+
+  .quiz-header {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .quiz-question {
+    padding: var(--space-lg);
+  }
+
+  .quiz-question__text {
+    font-size: var(--fs-base);
+  }
+
+  .quiz-result__stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .quiz-result-score {
+    width: 110px;
+    height: 110px;
+  }
+
+  .quiz-result-score__value {
+    font-size: var(--fs-2xl);
+  }
+
+
+  /* --- Boss battle --- */
+  .boss-header {
+    padding: var(--space-sm) var(--space-md);
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .boss-name {
+    font-size: var(--fs-base);
+    width: 100%;
+    text-align: center;
+    order: -1;
+  }
+
+  .boss-health-bar {
+    height: 18px;
+    flex: 1;
+  }
+
+  .boss-timer {
+    width: 44px;
+    height: 44px;
+    font-size: var(--fs-base);
+  }
+
+  .player-hud {
+    padding: var(--space-sm) var(--space-md);
+    padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
+    gap: var(--space-md);
+  }
+
+  .boss-question {
+    padding: var(--space-md);
+  }
+
+  .boss-question__card {
+    padding: var(--space-lg);
+  }
+
+  .boss-question__options {
+    grid-template-columns: 1fr;
+  }
+
+  .boss-intro__name {
+    font-size: var(--fs-2xl);
+  }
+
+  .boss-victory__title,
+  .boss-defeat__title {
+    font-size: var(--fs-2xl);
+  }
+
+  .boss-victory__stats {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+
+  /* --- Simulation --- */
+  .sim-container {
+    padding: var(--space-lg) var(--space-md);
+    padding-bottom: calc(60px + var(--space-lg) + env(safe-area-inset-bottom));
+  }
+
+  .sim-layout {
+    flex-direction: column;
+  }
+
+  .sim-layout__side {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .sim-canvas-wrapper {
+    border-radius: var(--border-radius);
+  }
+
+  .sim-controls-row {
+    flex-wrap: wrap;
+  }
+
+  .sim-slider-group {
+    min-width: 100%;
+  }
+
+
+  /* --- Achievements --- */
+  .achievements-page {
+    padding: var(--space-lg) var(--space-md);
+    padding-bottom: calc(60px + var(--space-lg) + env(safe-area-inset-bottom));
+  }
+
+  .achievements-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .achievement-card {
+    padding: var(--space-md);
+  }
+
+  .achievement-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+  }
+
+  .achievement-toast {
+    top: auto;
+    bottom: calc(60px + var(--space-md) + env(safe-area-inset-bottom));
+    right: var(--space-md);
+    left: var(--space-md);
+    max-width: none;
+  }
+
+
+  /* --- Skill tree --- */
+  .tree-legend {
+    bottom: calc(60px + var(--space-md) + env(safe-area-inset-bottom));
+    left: var(--space-md);
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-md);
+    font-size: var(--fs-xs);
+  }
+
+  .tree-controls {
+    bottom: calc(60px + var(--space-md) + env(safe-area-inset-bottom));
+    right: var(--space-md);
+    flex-direction: row;
+  }
+
+  .tree-controls__btn {
+    width: 36px;
+    height: 36px;
+  }
+
+
+  /* --- Touch-friendly targets --- */
+  .btn,
+  .lesson-tab,
+  .chip,
+  .tag,
+  .quiz-option,
+  .boss-question__option,
+  .bottom-nav-item,
+  .icon-btn,
+  .sim-btn,
+  .tree-controls__btn,
+  .achievement-category-filter__btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* --- Nav: hamburger-friendly spacing --- */
+  .nav-links {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: flex;
+  }
+}
+
+
+/* ==========================================================
+   SMALL MOBILE — max-width: 480px
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+  /* Further font reductions */
+  h1 { font-size: var(--fs-xl); }
+  h2 { font-size: var(--fs-lg); }
+  h3 { font-size: var(--fs-base); }
+
+  .page {
+    padding: var(--space-md) var(--space-sm);
+    padding-bottom: calc(60px + var(--space-md) + env(safe-area-inset-bottom));
+  }
+
+  /* Dashboard */
+  .dashboard {
+    padding: var(--space-md) var(--space-sm);
+    gap: var(--space-sm);
+  }
+
+  .hero-section {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .hero-avatar__image {
+    width: 72px;
+    height: 72px;
+    font-size: var(--fs-2xl);
+  }
+
+  .hero-info__name {
+    font-size: var(--fs-xl);
+  }
+
+  .hero-stats {
+    gap: var(--space-md);
+  }
+
+  .stats-overview {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+  }
+
+  .stat-card {
+    padding: var(--space-md);
+  }
+
+  /* Quiz */
+  .quiz-result__stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .quiz-result__actions {
+    flex-direction: column;
+  }
+
+  .quiz-option {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  /* Achievements */
+  .achievements-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .achievement-card__description {
+    display: none;
+  }
+
+  /* Boss battle */
+  .boss-question__text {
+    font-size: var(--fs-base);
+  }
+
+  .player-lives .life {
+    width: 26px;
+    height: 26px;
+    font-size: 1.1rem;
+  }
+
+  /* Simulation */
+  .sim-controls {
+    padding: var(--space-md);
+  }
+
+  .sim-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Lesson */
+  .lesson-header__title {
+    font-size: var(--fs-lg);
+  }
+
+  .reading-section {
+    flex-direction: column;
+  }
+
+  .reading-section__icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+  }
+
+  .lesson-nav__btn {
+    padding: 8px 14px;
+    font-size: var(--fs-xs);
+  }
+
+  .video-container {
+    border-radius: var(--border-radius-sm);
+  }
+
+  /* Category filter scrolls */
+  .achievement-category-filter {
+    gap: var(--space-xs);
+  }
+
+  .achievement-category-filter__btn {
+    padding: 6px 12px;
+    font-size: var(--fs-xs);
+  }
+}
+
+
+/* ==========================================================
+   LANDSCAPE MOBILE SAFETY
+   ========================================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .bottom-nav {
+    height: 48px;
+  }
+
+  .bottom-nav-item__label {
+    display: none;
+  }
+
+  .bottom-nav-item__icon {
+    font-size: 1.2rem;
+  }
+
+  .boss-header {
+    padding: var(--space-xs) var(--space-md);
+  }
+
+  .player-hud {
+    padding: var(--space-xs) var(--space-md);
+  }
+}

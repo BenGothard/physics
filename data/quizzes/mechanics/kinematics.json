@@ -1,0 +1,17 @@
+{
+  "id": "mech-kinematics",
+  "title": "Kinematics Quiz",
+  "description": "Test your understanding of motion, velocity, and acceleration",
+  "questions": [
+    {"type": "multiple", "text": "A car travels 100 km in 2 hours. What is its average velocity?", "options": ["25 km/h", "50 km/h", "200 km/h", "100 km/h"], "correct": 1},
+    {"type": "multiple", "text": "An object starts from rest and accelerates at 5 m/s². How far does it travel in 4 seconds?", "options": ["20 m", "40 m", "80 m", "160 m"], "correct": 2},
+    {"type": "multiple", "text": "What does the area under a velocity-time graph represent?", "options": ["Acceleration", "Displacement", "Speed", "Time"], "correct": 1},
+    {"type": "multiple", "text": "A ball is thrown vertically upward with initial velocity 20 m/s. How long until it returns to the starting height? (g=10 m/s²)", "options": ["1 s", "2 s", "3 s", "4 s"], "correct": 3},
+    {"type": "multiple", "text": "Which of these is NOT a vector quantity?", "options": ["Displacement", "Velocity", "Distance", "Acceleration"], "correct": 2},
+    {"type": "numerical", "text": "A cyclist travels 15 m in 3 seconds. What is the velocity in m/s?", "answer": 5, "tolerance": 0.5},
+    {"type": "multiple", "text": "In uniform circular motion, the velocity is tangent to the circle and the acceleration points toward the center. This acceleration is called:", "options": ["Tangential acceleration", "Centripetal acceleration", "Angular acceleration", "Linear acceleration"], "correct": 1},
+    {"type": "multiple", "text": "An object with constant velocity has acceleration equal to:", "options": ["Zero", "Constant and positive", "Constant and negative", "Changing"], "correct": 0},
+    {"type": "numerical", "text": "A projectile is launched horizontally at 20 m/s from a 45 m tall cliff. How long does it take to hit the ground? (g=10 m/s²)", "answer": 3, "tolerance": 0.2},
+    {"type": "multiple", "text": "Which graph best represents motion with constant acceleration?", "options": ["Straight horizontal line", "Straight diagonal line", "Parabola", "Circle"], "correct": 1}
+  ]
+}

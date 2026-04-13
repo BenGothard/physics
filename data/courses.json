@@ -1,0 +1,181 @@
+{
+  "courses": [
+    {
+      "id": "mechanics",
+      "title": "Classical Mechanics",
+      "subtitle": "MIT 8.01 — Forces, Motion, and Energy",
+      "description": "Master the fundamental laws that govern motion, from projectiles to planetary orbits.",
+      "color": "#3b82f6",
+      "icon": "⚙️",
+      "totalLessons": 21,
+      "units": [
+        {
+          "id": "mech-unit-1",
+          "title": "Kinematics & Vectors",
+          "bossId": "boss-kinematic-kraken",
+          "bossName": "The Kinematic Kraken",
+          "lessons": [
+            {"id": "mech-1-1", "title": "Powers of Ten — Units & Dimensions", "lewinLecture": 1, "feynmanVolume": "I", "feynmanChapter": 5, "simulationId": null, "quizId": "mech-kinematics"},
+            {"id": "mech-1-2", "title": "1D Kinematics — Speed & Velocity", "lewinLecture": 2, "feynmanVolume": "I", "feynmanChapter": 8, "simulationId": "projectile", "quizId": "mech-kinematics"},
+            {"id": "mech-1-3", "title": "Vectors — Components & Addition", "lewinLecture": 4, "feynmanVolume": "I", "feynmanChapter": 11, "simulationId": null, "quizId": "mech-kinematics"},
+            {"id": "mech-1-4", "title": "2D Motion & Projectiles", "lewinLecture": 5, "feynmanVolume": "I", "feynmanChapter": 9, "simulationId": "projectile", "quizId": "mech-kinematics"},
+            {"id": "mech-1-5", "title": "Uniform Circular Motion", "lewinLecture": 6, "feynmanVolume": "I", "feynmanChapter": 19, "simulationId": "orbits", "quizId": "mech-kinematics"}
+          ]
+        },
+        {
+          "id": "mech-unit-2",
+          "title": "Newton's Laws & Forces",
+          "bossId": "boss-newtons-nemesis",
+          "bossName": "Newton's Nemesis",
+          "lessons": [
+            {"id": "mech-2-1", "title": "Newton's First Law — Inertia", "lewinLecture": 7, "feynmanVolume": "I", "feynmanChapter": 9, "simulationId": null, "quizId": "mech-newtons-laws"},
+            {"id": "mech-2-2", "title": "Newton's Second Law — F=ma", "lewinLecture": 8, "feynmanVolume": "I", "feynmanChapter": 9, "simulationId": null, "quizId": "mech-newtons-laws"},
+            {"id": "mech-2-3", "title": "Newton's Third Law — Action & Reaction", "lewinLecture": 9, "feynmanVolume": "I", "feynmanChapter": 10, "simulationId": null, "quizId": "mech-newtons-laws"},
+            {"id": "mech-2-4", "title": "Friction & Drag Forces", "lewinLecture": 10, "feynmanVolume": "I", "feynmanChapter": 12, "simulationId": "inclined-plane", "quizId": "mech-newtons-laws"},
+            {"id": "mech-2-5", "title": "Springs & Hooke's Law", "lewinLecture": 12, "feynmanVolume": "I", "feynmanChapter": 21, "simulationId": "spring", "quizId": "mech-newtons-laws"}
+          ]
+        },
+        {
+          "id": "mech-unit-3",
+          "title": "Energy & Momentum",
+          "bossId": "boss-energy-enigma",
+          "bossName": "The Energy Enigma",
+          "lessons": [
+            {"id": "mech-3-1", "title": "Work & Kinetic Energy", "lewinLecture": 17, "feynmanVolume": "I", "feynmanChapter": 13, "simulationId": null, "quizId": "mech-energy-momentum"},
+            {"id": "mech-3-2", "title": "Potential Energy & Conservative Forces", "lewinLecture": 19, "feynmanVolume": "I", "feynmanChapter": 14, "simulationId": null, "quizId": "mech-energy-momentum"},
+            {"id": "mech-3-3", "title": "Conservation of Energy", "lewinLecture": 20, "feynmanVolume": "I", "feynmanChapter": 4, "simulationId": "pendulum", "quizId": "mech-energy-momentum"},
+            {"id": "mech-3-4", "title": "Momentum & Impulse", "lewinLecture": 22, "feynmanVolume": "I", "feynmanChapter": 10, "simulationId": null, "quizId": "mech-energy-momentum"},
+            {"id": "mech-3-5", "title": "Elastic & Inelastic Collisions", "lewinLecture": 23, "feynmanVolume": "I", "feynmanChapter": 10, "simulationId": "collisions", "quizId": "mech-energy-momentum"},
+            {"id": "mech-3-6", "title": "Center of Mass", "lewinLecture": 25, "feynmanVolume": "I", "feynmanChapter": 19, "simulationId": null, "quizId": "mech-energy-momentum"}
+          ]
+        },
+        {
+          "id": "mech-unit-4",
+          "title": "Rotation & Gravity",
+          "bossId": "boss-rotational-revenant",
+          "bossName": "The Rotational Revenant",
+          "lessons": [
+            {"id": "mech-4-1", "title": "Rotational Kinematics", "lewinLecture": 26, "feynmanVolume": "I", "feynmanChapter": 18, "simulationId": null, "quizId": "mech-rotation"},
+            {"id": "mech-4-2", "title": "Torque & Equilibrium", "lewinLecture": 28, "feynmanVolume": "I", "feynmanChapter": 18, "simulationId": null, "quizId": "mech-rotation"},
+            {"id": "mech-4-3", "title": "Angular Momentum", "lewinLecture": 30, "feynmanVolume": "I", "feynmanChapter": 20, "simulationId": null, "quizId": "mech-rotation"},
+            {"id": "mech-4-4", "title": "Gravity & Orbits", "lewinLecture": 32, "feynmanVolume": "I", "feynmanChapter": 7, "simulationId": "orbits", "quizId": "mech-rotation"},
+            {"id": "mech-4-5", "title": "Kepler's Laws & Satellites", "lewinLecture": 34, "feynmanVolume": "I", "feynmanChapter": 7, "simulationId": "orbits", "quizId": "mech-rotation"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "electromagnetism",
+      "title": "Electromagnetism",
+      "subtitle": "MIT 8.02 — Fields, Circuits & Waves",
+      "description": "From electric charges to electromagnetic waves — the forces that light up the universe.",
+      "color": "#f59e0b",
+      "icon": "⚡",
+      "totalLessons": 20,
+      "units": [
+        {
+          "id": "em-unit-1",
+          "title": "Electric Fields & Forces",
+          "bossId": "boss-coulombs-colossus",
+          "bossName": "Coulomb's Colossus",
+          "lessons": [
+            {"id": "em-1-1", "title": "Electric Charge & Coulomb's Law", "lewinLecture": 1, "feynmanVolume": "II", "feynmanChapter": 1, "simulationId": null, "quizId": "em-electric-fields"},
+            {"id": "em-1-2", "title": "Electric Fields", "lewinLecture": 2, "feynmanVolume": "II", "feynmanChapter": 2, "simulationId": "e-field", "quizId": "em-electric-fields"},
+            {"id": "em-1-3", "title": "Electric Flux & Gauss's Law", "lewinLecture": 3, "feynmanVolume": "II", "feynmanChapter": 4, "simulationId": null, "quizId": "em-electric-fields"},
+            {"id": "em-1-4", "title": "Electrostatic Potential Energy", "lewinLecture": 5, "feynmanVolume": "II", "feynmanChapter": 4, "simulationId": null, "quizId": "em-electric-fields"},
+            {"id": "em-1-5", "title": "Electric Potential", "lewinLecture": 6, "feynmanVolume": "II", "feynmanChapter": 5, "simulationId": null, "quizId": "em-electric-fields"}
+          ]
+        },
+        {
+          "id": "em-unit-2",
+          "title": "Capacitance & DC Circuits",
+          "bossId": "boss-circuit-serpent",
+          "bossName": "The Circuit Serpent",
+          "lessons": [
+            {"id": "em-2-1", "title": "Capacitors & Dielectrics", "lewinLecture": 8, "feynmanVolume": "II", "feynmanChapter": 6, "simulationId": null, "quizId": "em-circuits"},
+            {"id": "em-2-2", "title": "Current & Resistance", "lewinLecture": 10, "feynmanVolume": "II", "feynmanChapter": 32, "simulationId": null, "quizId": "em-circuits"},
+            {"id": "em-2-3", "title": "Ohm's Law & DC Circuits", "lewinLecture": 12, "feynmanVolume": "II", "feynmanChapter": 22, "simulationId": "circuits", "quizId": "em-circuits"},
+            {"id": "em-2-4", "title": "Kirchhoff's Rules & RC Circuits", "lewinLecture": 13, "feynmanVolume": "II", "feynmanChapter": 22, "simulationId": null, "quizId": "em-circuits"},
+            {"id": "em-2-5", "title": "Energy in Electric Fields", "lewinLecture": 15, "feynmanVolume": "II", "feynmanChapter": 8, "simulationId": null, "quizId": "em-circuits"}
+          ]
+        },
+        {
+          "id": "em-unit-3",
+          "title": "Magnetism",
+          "bossId": "boss-potential-phantom",
+          "bossName": "The Potential Phantom",
+          "lessons": [
+            {"id": "em-3-1", "title": "Magnetic Fields & Forces", "lewinLecture": 16, "feynmanVolume": "II", "feynmanChapter": 13, "simulationId": null, "quizId": "em-magnetism"},
+            {"id": "em-3-2", "title": "Charged Particles in B Fields", "lewinLecture": 18, "feynmanVolume": "II", "feynmanChapter": 14, "simulationId": null, "quizId": "em-magnetism"},
+            {"id": "em-3-3", "title": "Biot-Savart & Ampere's Law", "lewinLecture": 19, "feynmanVolume": "II", "feynmanChapter": 13, "simulationId": null, "quizId": "em-magnetism"},
+            {"id": "em-3-4", "title": "Magnetic Materials", "lewinLecture": 21, "feynmanVolume": "II", "feynmanChapter": 36, "simulationId": null, "quizId": "em-magnetism"},
+            {"id": "em-3-5", "title": "Lorentz Force", "lewinLecture": 22, "feynmanVolume": "II", "feynmanChapter": 15, "simulationId": null, "quizId": "em-magnetism"}
+          ]
+        },
+        {
+          "id": "em-unit-4",
+          "title": "Induction & EM Waves",
+          "bossId": "boss-maxwells-dragon",
+          "bossName": "Maxwell's Dragon",
+          "lessons": [
+            {"id": "em-4-1", "title": "Faraday's Law of Induction", "lewinLecture": 23, "feynmanVolume": "II", "feynmanChapter": 16, "simulationId": null, "quizId": "em-induction"},
+            {"id": "em-4-2", "title": "Lenz's Law & Inductors", "lewinLecture": 25, "feynmanVolume": "II", "feynmanChapter": 17, "simulationId": null, "quizId": "em-induction"},
+            {"id": "em-4-3", "title": "AC Circuits & Resonance", "lewinLecture": 27, "feynmanVolume": "II", "feynmanChapter": 23, "simulationId": null, "quizId": "em-induction"},
+            {"id": "em-4-4", "title": "Maxwell's Equations", "lewinLecture": 29, "feynmanVolume": "II", "feynmanChapter": 18, "simulationId": null, "quizId": "em-induction"},
+            {"id": "em-4-5", "title": "Electromagnetic Waves", "lewinLecture": 31, "feynmanVolume": "II", "feynmanChapter": 20, "simulationId": "waves", "quizId": "em-induction"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "waves-quantum",
+      "title": "Waves & Quantum",
+      "subtitle": "MIT 8.03 — Oscillations to Uncertainty",
+      "description": "From vibrating strings to quantum states — the deepest physics of reality.",
+      "color": "#8b5cf6",
+      "icon": "🌊",
+      "totalLessons": 15,
+      "units": [
+        {
+          "id": "wq-unit-1",
+          "title": "Oscillations",
+          "bossId": "boss-harmonic-hydra",
+          "bossName": "The Harmonic Hydra",
+          "lessons": [
+            {"id": "wq-1-1", "title": "Simple Harmonic Motion", "lewinLecture": 1, "feynmanVolume": "I", "feynmanChapter": 21, "simulationId": "spring", "quizId": "wq-oscillations"},
+            {"id": "wq-1-2", "title": "Damped Oscillations", "lewinLecture": 3, "feynmanVolume": "I", "feynmanChapter": 24, "simulationId": "spring", "quizId": "wq-oscillations"},
+            {"id": "wq-1-3", "title": "Driven Oscillations & Resonance", "lewinLecture": 4, "feynmanVolume": "I", "feynmanChapter": 23, "simulationId": null, "quizId": "wq-oscillations"},
+            {"id": "wq-1-4", "title": "Coupled Oscillators", "lewinLecture": 6, "feynmanVolume": "I", "feynmanChapter": 49, "simulationId": null, "quizId": "wq-oscillations"},
+            {"id": "wq-1-5", "title": "Normal Modes", "lewinLecture": 8, "feynmanVolume": "I", "feynmanChapter": 49, "simulationId": null, "quizId": "wq-oscillations"}
+          ]
+        },
+        {
+          "id": "wq-unit-2",
+          "title": "Waves",
+          "bossId": "boss-resonance-wraith",
+          "bossName": "The Resonance Wraith",
+          "lessons": [
+            {"id": "wq-2-1", "title": "Traveling Waves", "lewinLecture": 9, "feynmanVolume": "I", "feynmanChapter": 47, "simulationId": "waves", "quizId": "wq-waves"},
+            {"id": "wq-2-2", "title": "Wave Equation & Superposition", "lewinLecture": 11, "feynmanVolume": "I", "feynmanChapter": 47, "simulationId": "waves", "quizId": "wq-waves"},
+            {"id": "wq-2-3", "title": "Standing Waves & Harmonics", "lewinLecture": 12, "feynmanVolume": "I", "feynmanChapter": 49, "simulationId": "waves", "quizId": "wq-waves"},
+            {"id": "wq-2-4", "title": "Sound Waves & Doppler Effect", "lewinLecture": 14, "feynmanVolume": "I", "feynmanChapter": 47, "simulationId": null, "quizId": "wq-waves"},
+            {"id": "wq-2-5", "title": "Interference & Diffraction", "lewinLecture": 16, "feynmanVolume": "I", "feynmanChapter": 28, "simulationId": "double-slit", "quizId": "wq-waves"}
+          ]
+        },
+        {
+          "id": "wq-unit-3",
+          "title": "EM Waves & Quantum Intro",
+          "bossId": "boss-quantum-chimera",
+          "bossName": "The Quantum Chimera",
+          "lessons": [
+            {"id": "wq-3-1", "title": "EM Waves — Properties", "lewinLecture": 18, "feynmanVolume": "I", "feynmanChapter": 28, "simulationId": null, "quizId": "wq-quantum"},
+            {"id": "wq-3-2", "title": "Polarization", "lewinLecture": 20, "feynmanVolume": "I", "feynmanChapter": 33, "simulationId": null, "quizId": "wq-quantum"},
+            {"id": "wq-3-3", "title": "Double Slit Experiment", "lewinLecture": 21, "feynmanVolume": "III", "feynmanChapter": 1, "simulationId": "double-slit", "quizId": "wq-quantum"},
+            {"id": "wq-3-4", "title": "Photons & Wave-Particle Duality", "lewinLecture": 23, "feynmanVolume": "III", "feynmanChapter": 1, "simulationId": null, "quizId": "wq-quantum"},
+            {"id": "wq-3-5", "title": "Uncertainty Principle & Quantum States", "lewinLecture": 24, "feynmanVolume": "III", "feynmanChapter": 2, "simulationId": null, "quizId": "wq-quantum"}
+          ]
+        }
+      ]
+    }
+  ]
+}

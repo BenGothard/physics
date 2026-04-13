@@ -1,0 +1,576 @@
+/* ============================================
+   PhysicsQuest — boss-battle.css
+   Boss battle arena: health bars, HUD,
+   question cards, victory/defeat screens
+   ============================================ */
+
+/* ============ ARENA ============ */
+
+.boss-arena {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Starfield pattern */
+  background-image:
+    radial-gradient(1px 1px at 5% 10%, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 15% 45%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1.5px 1.5px at 25% 80%, rgba(255, 255, 255, 0.12), transparent),
+    radial-gradient(1px 1px at 35% 25%, rgba(255, 255, 255, 0.08), transparent),
+    radial-gradient(1px 1px at 45% 65%, rgba(255, 255, 255, 0.14), transparent),
+    radial-gradient(1.5px 1.5px at 55% 15%, rgba(239, 68, 68, 0.12), transparent),
+    radial-gradient(1px 1px at 65% 55%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 75% 85%, rgba(255, 255, 255, 0.08), transparent),
+    radial-gradient(1.5px 1.5px at 85% 35%, rgba(255, 255, 255, 0.13), transparent),
+    radial-gradient(1px 1px at 92% 70%, rgba(239, 68, 68, 0.1), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.06), transparent),
+    radial-gradient(1px 1px at 10% 90%, rgba(255, 255, 255, 0.09), transparent);
+}
+
+.boss-arena::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(239, 68, 68, 0.06) 0%,
+    rgba(139, 92, 246, 0.03) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ============ BOSS HEADER ============ */
+
+.boss-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  padding: var(--space-md) var(--space-xl);
+  background: linear-gradient(180deg, rgba(10, 14, 26, 0.95), rgba(10, 14, 26, 0.8));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.12);
+}
+
+
+/* ============ BOSS NAME ============ */
+
+.boss-name {
+  font-size: var(--fs-xl);
+  font-weight: 900;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-shadow:
+    0 0 10px rgba(239, 68, 68, 0.6),
+    0 0 30px rgba(239, 68, 68, 0.3);
+  white-space: nowrap;
+}
+
+
+/* ============ HEALTH BAR ============ */
+
+.boss-health-bar {
+  flex: 1;
+  max-width: 500px;
+  height: 24px;
+  background: rgba(148, 163, 184, 0.08);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.boss-health-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #dc2626, var(--accent-red), #f87171);
+  border-radius: var(--border-radius-full);
+  transition: width 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+}
+
+.boss-health-bar-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  animation: shimmer 2.5s infinite;
+}
+
+.boss-health-bar__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  font-family: var(--font-mono);
+}
+
+.boss-health-bar.hit {
+  animation: shake 0.5s ease;
+}
+
+.boss-health-bar.hit .boss-health-bar-fill {
+  animation: damageFlash 0.4s ease;
+}
+
+
+/* ============ BOSS TIMER ============ */
+
+.boss-timer {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--border-radius-full);
+  background: var(--bg-card);
+  border: 3px solid rgba(148, 163, 184, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  flex-shrink: 0;
+  transition:
+    border-color var(--transition-normal),
+    color var(--transition-normal);
+}
+
+.boss-timer.warning {
+  border-color: var(--accent-yellow);
+  color: var(--accent-yellow);
+}
+
+.boss-timer.urgent {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  animation: urgentPulse 1s ease-in-out infinite;
+}
+
+
+/* ============ PLAYER HUD ============ */
+
+.player-hud {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xl);
+  padding: var(--space-md) var(--space-xl);
+  background: linear-gradient(0deg, rgba(10, 14, 26, 0.95), rgba(10, 14, 26, 0.8));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.player-lives {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.player-lives .life {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  transition:
+    transform var(--transition-normal),
+    opacity var(--transition-normal),
+    filter var(--transition-normal);
+}
+
+.player-lives .life.lost {
+  animation: heartBreak 0.6s ease forwards;
+  filter: grayscale(1);
+  opacity: 0.3;
+}
+
+.player-score {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.player-score__label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.player-xp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  color: var(--xp-gold);
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.3);
+}
+
+
+/* ============ BOSS QUESTION ============ */
+
+.boss-question {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  width: 100%;
+  padding: var(--space-lg);
+  animation: popIn 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.boss-question__card {
+  background: var(--bg-card);
+  border: 1px solid rgba(239, 68, 68, 0.12);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(239, 68, 68, 0.08);
+}
+
+.boss-question__number {
+  font-size: var(--fs-xs);
+  color: var(--accent-red);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-sm);
+}
+
+.boss-question__text {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: var(--space-lg);
+}
+
+.boss-question__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.boss-question__option {
+  background: var(--bg-secondary);
+  border: 2px solid rgba(148, 163, 184, 0.1);
+  border-radius: var(--border-radius);
+  padding: var(--space-md) var(--space-lg);
+  cursor: pointer;
+  font-size: var(--fs-base);
+  color: var(--text-primary);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-normal);
+}
+
+.boss-question__option:hover {
+  transform: translateY(-2px);
+  border-color: rgba(239, 68, 68, 0.3);
+  background: var(--bg-card-hover);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.boss-question__option.correct {
+  border-color: var(--accent-green);
+  background: rgba(16, 185, 129, 0.1);
+  box-shadow: var(--glow-green);
+}
+
+.boss-question__option.wrong {
+  border-color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.1);
+  animation: shake 0.5s ease;
+}
+
+
+/* ============ SCREEN SHAKE ============ */
+
+.screen-shake {
+  animation: screenShake 0.5s ease;
+}
+
+
+/* ============ BOSS INTRO ============ */
+
+.boss-intro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  text-align: center;
+}
+
+.boss-intro__name {
+  font-size: var(--fs-4xl);
+  font-weight: 900;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow:
+    0 0 20px rgba(239, 68, 68, 0.7),
+    0 0 60px rgba(239, 68, 68, 0.3);
+  animation: slideUp 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.boss-intro__subtitle {
+  font-size: var(--fs-lg);
+  color: var(--text-secondary);
+  margin-top: var(--space-md);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  animation: fadeIn 600ms ease 400ms both;
+}
+
+.boss-intro__cue {
+  margin-top: var(--space-2xl);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  animation: pulse 2s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+
+/* ============ VICTORY SCREEN ============ */
+
+.boss-victory {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  animation: fadeIn 500ms ease forwards;
+}
+
+.boss-victory::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(16, 185, 129, 0.15) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  animation: popIn 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.boss-victory__title {
+  font-size: var(--fs-4xl);
+  font-weight: 900;
+  color: var(--accent-green);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-shadow:
+    0 0 20px rgba(16, 185, 129, 0.7),
+    0 0 60px rgba(16, 185, 129, 0.3);
+  animation: popIn 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+  z-index: 1;
+}
+
+.boss-victory__xp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+  padding: var(--space-sm) var(--space-xl);
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  border-radius: var(--border-radius-full);
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--xp-gold);
+  animation: popIn 500ms cubic-bezier(0.16, 1, 0.3, 1) 400ms both;
+  position: relative;
+  z-index: 1;
+}
+
+.boss-victory__confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.boss-victory__stats {
+  display: flex;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+  position: relative;
+  z-index: 1;
+  animation: slideUp 500ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
+}
+
+.boss-victory__stat {
+  text-align: center;
+}
+
+.boss-victory__stat-value {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.boss-victory__stat-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: var(--space-xs);
+}
+
+.boss-victory__actions {
+  margin-top: var(--space-2xl);
+  display: flex;
+  gap: var(--space-md);
+  position: relative;
+  z-index: 1;
+  animation: slideUp 500ms cubic-bezier(0.16, 1, 0.3, 1) 800ms both;
+}
+
+
+/* ============ DEFEAT SCREEN ============ */
+
+.boss-defeat {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  animation: fadeIn 500ms ease forwards;
+}
+
+.boss-defeat::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(239, 68, 68, 0.12) 0%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+.boss-defeat__title {
+  font-size: var(--fs-4xl);
+  font-weight: 900;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-shadow:
+    0 0 15px rgba(239, 68, 68, 0.5),
+    0 0 40px rgba(239, 68, 68, 0.2);
+  position: relative;
+  z-index: 1;
+  animation: slideUp 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.boss-defeat__subtitle {
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+  margin-top: var(--space-md);
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 500ms ease 300ms both;
+}
+
+.boss-defeat__actions {
+  margin-top: var(--space-2xl);
+  display: flex;
+  gap: var(--space-md);
+  position: relative;
+  z-index: 1;
+  animation: slideUp 500ms cubic-bezier(0.16, 1, 0.3, 1) 500ms both;
+}
+
+.boss-defeat__retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 14px 32px;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-red), #dc2626);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(239, 68, 68, 0.3);
+  transition:
+    box-shadow var(--transition-normal),
+    transform var(--transition-fast);
+}
+
+.boss-defeat__retry-btn:hover {
+  box-shadow: var(--glow-red), 0 4px 20px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+.boss-defeat__retry-btn:active {
+  transform: scale(0.97);
+}
