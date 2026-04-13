@@ -9,6 +9,9 @@ import { Router } from './router.js';
 import store from './store.js';
 import { renderNav, updateNav } from './components/nav.js';
 import { renderDashboard } from './pages/dashboard.js';
+import { renderCourseList } from './pages/course-list.js';
+import { renderCourseOverview } from './pages/course-overview.js';
+import { renderLesson } from './pages/lesson.js';
 import { getLevelProgress, getLevelTitle, awardXP } from './xp.js';
 import { dateToKey, isToday } from './utils.js';
 import soundManager from './sound.js';
@@ -126,9 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Register all routes
   router
     .on('#/', renderDashboard)
-    .on('#/courses', stubPage('Courses'))
-    .on('#/courses/:courseId', stubPage('Course Overview'))
-    .on('#/courses/:courseId/:lessonId', stubPage('Lesson'))
+    .on('#/courses', renderCourseList)
+    .on('#/courses/:courseId', renderCourseOverview)
+    .on('#/courses/:courseId/:lessonId', renderLesson)
     .on('#/quiz/:quizId', stubPage('Quiz'))
     .on('#/profile', stubPage('Profile'))
     .on('#/skill-tree', stubPage('Skill Tree'))
