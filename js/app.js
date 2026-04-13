@@ -12,6 +12,10 @@ import { renderDashboard } from './pages/dashboard.js';
 import { renderCourseList } from './pages/course-list.js';
 import { renderCourseOverview } from './pages/course-overview.js';
 import { renderLesson } from './pages/lesson.js';
+import { renderSkillTree } from './pages/skill-tree.js';
+import { renderBossBattle } from './pages/boss-battle.js';
+import { renderSandbox } from './pages/sandbox.js';
+import { renderSettings } from './pages/settings.js';
 import { getLevelProgress, getLevelTitle, awardXP } from './xp.js';
 import { dateToKey, isToday } from './utils.js';
 import soundManager from './sound.js';
@@ -134,12 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
     .on('#/courses/:courseId/:lessonId', renderLesson)
     .on('#/quiz/:quizId', stubPage('Quiz'))
     .on('#/profile', stubPage('Profile'))
-    .on('#/skill-tree', stubPage('Skill Tree'))
-    .on('#/boss/:bossId', stubPage('Boss Battle'))
+    .on('#/skill-tree', renderSkillTree)
+    .on('#/boss/:bossId', renderBossBattle)
     .on('#/challenges', stubPage('Challenges'))
-    .on('#/sandbox', stubPage('Sandbox'))
+    .on('#/sandbox', renderSandbox)
     .on('#/leaderboard', stubPage('Leaderboard'))
-    .on('#/settings', stubPage('Settings'));
+    .on('#/settings', renderSettings);
 
   // 5. 404 handler
   router.notFound((params, container) => {
