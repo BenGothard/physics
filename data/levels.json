@@ -1,0 +1,480 @@
+{
+  "maxLevel": 100,
+  "xpFormula": "Math.round(100 * Math.pow(N, 1.5))",
+  "levels": [
+    {
+      "level": 1,
+      "cumulativeXP": 100
+    },
+    {
+      "level": 2,
+      "cumulativeXP": 283
+    },
+    {
+      "level": 3,
+      "cumulativeXP": 520
+    },
+    {
+      "level": 4,
+      "cumulativeXP": 800
+    },
+    {
+      "level": 5,
+      "cumulativeXP": 1118
+    },
+    {
+      "level": 6,
+      "cumulativeXP": 1470
+    },
+    {
+      "level": 7,
+      "cumulativeXP": 1852
+    },
+    {
+      "level": 8,
+      "cumulativeXP": 2263
+    },
+    {
+      "level": 9,
+      "cumulativeXP": 2700
+    },
+    {
+      "level": 10,
+      "cumulativeXP": 3162
+    },
+    {
+      "level": 11,
+      "cumulativeXP": 3648
+    },
+    {
+      "level": 12,
+      "cumulativeXP": 4157
+    },
+    {
+      "level": 13,
+      "cumulativeXP": 4687
+    },
+    {
+      "level": 14,
+      "cumulativeXP": 5238
+    },
+    {
+      "level": 15,
+      "cumulativeXP": 5809
+    },
+    {
+      "level": 16,
+      "cumulativeXP": 6400
+    },
+    {
+      "level": 17,
+      "cumulativeXP": 7009
+    },
+    {
+      "level": 18,
+      "cumulativeXP": 7637
+    },
+    {
+      "level": 19,
+      "cumulativeXP": 8282
+    },
+    {
+      "level": 20,
+      "cumulativeXP": 8944
+    },
+    {
+      "level": 21,
+      "cumulativeXP": 9623
+    },
+    {
+      "level": 22,
+      "cumulativeXP": 10319
+    },
+    {
+      "level": 23,
+      "cumulativeXP": 11030
+    },
+    {
+      "level": 24,
+      "cumulativeXP": 11758
+    },
+    {
+      "level": 25,
+      "cumulativeXP": 12500
+    },
+    {
+      "level": 26,
+      "cumulativeXP": 13257
+    },
+    {
+      "level": 27,
+      "cumulativeXP": 14030
+    },
+    {
+      "level": 28,
+      "cumulativeXP": 14816
+    },
+    {
+      "level": 29,
+      "cumulativeXP": 15617
+    },
+    {
+      "level": 30,
+      "cumulativeXP": 16432
+    },
+    {
+      "level": 31,
+      "cumulativeXP": 17260
+    },
+    {
+      "level": 32,
+      "cumulativeXP": 18102
+    },
+    {
+      "level": 33,
+      "cumulativeXP": 18957
+    },
+    {
+      "level": 34,
+      "cumulativeXP": 19825
+    },
+    {
+      "level": 35,
+      "cumulativeXP": 20706
+    },
+    {
+      "level": 36,
+      "cumulativeXP": 21600
+    },
+    {
+      "level": 37,
+      "cumulativeXP": 22506
+    },
+    {
+      "level": 38,
+      "cumulativeXP": 23425
+    },
+    {
+      "level": 39,
+      "cumulativeXP": 24355
+    },
+    {
+      "level": 40,
+      "cumulativeXP": 25298
+    },
+    {
+      "level": 41,
+      "cumulativeXP": 26253
+    },
+    {
+      "level": 42,
+      "cumulativeXP": 27219
+    },
+    {
+      "level": 43,
+      "cumulativeXP": 28197
+    },
+    {
+      "level": 44,
+      "cumulativeXP": 29186
+    },
+    {
+      "level": 45,
+      "cumulativeXP": 30187
+    },
+    {
+      "level": 46,
+      "cumulativeXP": 31199
+    },
+    {
+      "level": 47,
+      "cumulativeXP": 32222
+    },
+    {
+      "level": 48,
+      "cumulativeXP": 33255
+    },
+    {
+      "level": 49,
+      "cumulativeXP": 34300
+    },
+    {
+      "level": 50,
+      "cumulativeXP": 35355
+    },
+    {
+      "level": 51,
+      "cumulativeXP": 36421
+    },
+    {
+      "level": 52,
+      "cumulativeXP": 37498
+    },
+    {
+      "level": 53,
+      "cumulativeXP": 38585
+    },
+    {
+      "level": 54,
+      "cumulativeXP": 39682
+    },
+    {
+      "level": 55,
+      "cumulativeXP": 40789
+    },
+    {
+      "level": 56,
+      "cumulativeXP": 41907
+    },
+    {
+      "level": 57,
+      "cumulativeXP": 43034
+    },
+    {
+      "level": 58,
+      "cumulativeXP": 44171
+    },
+    {
+      "level": 59,
+      "cumulativeXP": 45319
+    },
+    {
+      "level": 60,
+      "cumulativeXP": 46476
+    },
+    {
+      "level": 61,
+      "cumulativeXP": 47643
+    },
+    {
+      "level": 62,
+      "cumulativeXP": 48819
+    },
+    {
+      "level": 63,
+      "cumulativeXP": 50005
+    },
+    {
+      "level": 64,
+      "cumulativeXP": 51200
+    },
+    {
+      "level": 65,
+      "cumulativeXP": 52405
+    },
+    {
+      "level": 66,
+      "cumulativeXP": 53619
+    },
+    {
+      "level": 67,
+      "cumulativeXP": 54842
+    },
+    {
+      "level": 68,
+      "cumulativeXP": 56074
+    },
+    {
+      "level": 69,
+      "cumulativeXP": 57316
+    },
+    {
+      "level": 70,
+      "cumulativeXP": 58566
+    },
+    {
+      "level": 71,
+      "cumulativeXP": 59826
+    },
+    {
+      "level": 72,
+      "cumulativeXP": 61094
+    },
+    {
+      "level": 73,
+      "cumulativeXP": 62371
+    },
+    {
+      "level": 74,
+      "cumulativeXP": 63657
+    },
+    {
+      "level": 75,
+      "cumulativeXP": 64952
+    },
+    {
+      "level": 76,
+      "cumulativeXP": 66255
+    },
+    {
+      "level": 77,
+      "cumulativeXP": 67567
+    },
+    {
+      "level": 78,
+      "cumulativeXP": 68888
+    },
+    {
+      "level": 79,
+      "cumulativeXP": 70217
+    },
+    {
+      "level": 80,
+      "cumulativeXP": 71554
+    },
+    {
+      "level": 81,
+      "cumulativeXP": 72900
+    },
+    {
+      "level": 82,
+      "cumulativeXP": 74254
+    },
+    {
+      "level": 83,
+      "cumulativeXP": 75617
+    },
+    {
+      "level": 84,
+      "cumulativeXP": 76987
+    },
+    {
+      "level": 85,
+      "cumulativeXP": 78366
+    },
+    {
+      "level": 86,
+      "cumulativeXP": 79753
+    },
+    {
+      "level": 87,
+      "cumulativeXP": 81148
+    },
+    {
+      "level": 88,
+      "cumulativeXP": 82551
+    },
+    {
+      "level": 89,
+      "cumulativeXP": 83962
+    },
+    {
+      "level": 90,
+      "cumulativeXP": 85381
+    },
+    {
+      "level": 91,
+      "cumulativeXP": 86808
+    },
+    {
+      "level": 92,
+      "cumulativeXP": 88243
+    },
+    {
+      "level": 93,
+      "cumulativeXP": 89686
+    },
+    {
+      "level": 94,
+      "cumulativeXP": 91136
+    },
+    {
+      "level": 95,
+      "cumulativeXP": 92595
+    },
+    {
+      "level": 96,
+      "cumulativeXP": 94060
+    },
+    {
+      "level": 97,
+      "cumulativeXP": 95534
+    },
+    {
+      "level": 98,
+      "cumulativeXP": 97015
+    },
+    {
+      "level": 99,
+      "cumulativeXP": 98504
+    },
+    {
+      "level": 100,
+      "cumulativeXP": 100000
+    }
+  ],
+  "titles": [
+    {
+      "minLevel": 1,
+      "maxLevel": 5,
+      "title": "Curious Observer",
+      "icon": "eye"
+    },
+    {
+      "minLevel": 6,
+      "maxLevel": 10,
+      "title": "Apprentice Experimenter",
+      "icon": "flask"
+    },
+    {
+      "minLevel": 11,
+      "maxLevel": 20,
+      "title": "Lab Technician",
+      "icon": "microscope"
+    },
+    {
+      "minLevel": 21,
+      "maxLevel": 30,
+      "title": "Research Associate",
+      "icon": "clipboard"
+    },
+    {
+      "minLevel": 31,
+      "maxLevel": 40,
+      "title": "Theoretical Thinker",
+      "icon": "brain"
+    },
+    {
+      "minLevel": 41,
+      "maxLevel": 50,
+      "title": "Quantum Explorer",
+      "icon": "atom"
+    },
+    {
+      "minLevel": 51,
+      "maxLevel": 60,
+      "title": "Field Master",
+      "icon": "magnet"
+    },
+    {
+      "minLevel": 61,
+      "maxLevel": 70,
+      "title": "Principal Investigator",
+      "icon": "telescope"
+    },
+    {
+      "minLevel": 71,
+      "maxLevel": 80,
+      "title": "Distinguished Physicist",
+      "icon": "star"
+    },
+    {
+      "minLevel": 81,
+      "maxLevel": 90,
+      "title": "Nobel Candidate",
+      "icon": "medal"
+    },
+    {
+      "minLevel": 91,
+      "maxLevel": 99,
+      "title": "Physics Grandmaster",
+      "icon": "crown"
+    },
+    {
+      "minLevel": 100,
+      "maxLevel": 100,
+      "title": "Feynman Level",
+      "icon": "infinity"
+    }
+  ]
+}
