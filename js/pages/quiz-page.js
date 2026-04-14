@@ -8,7 +8,7 @@ import soundManager from '../sound.js';
 export function renderQuiz(params, container) {
   const { quizId } = params;
 
-  fetch(`/data/quizzes/${quizId.split('-')[0]}/${quizId}.json`)
+  fetch(`data/quizzes/${quizId.split('-')[0]}/${quizId}.json`)
     .then(r => r.json())
     .catch(() => {
       container.innerHTML = '<p>Quiz not found</p>';

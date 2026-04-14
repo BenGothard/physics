@@ -19,7 +19,7 @@ export function renderCourseOverview(params, container) {
   }
 
   // Fetch courses.json to get the structure
-  fetch('/data/courses.json')
+  fetch('data/courses.json')
     .then(r => r.json())
     .then(data => {
       const courseData = data.courses.find(c => c.id === courseId);
