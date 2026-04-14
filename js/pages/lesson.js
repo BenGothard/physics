@@ -14,7 +14,7 @@ const FEYNMAN_URLS = {
 export function renderLesson(params, container) {
   const { courseId, lessonId } = params;
 
-  fetch('/data/courses.json')
+  fetch('data/courses.json')
     .then(r => r.json())
     .then(data => {
       const courseData = data.courses.find(c => c.id === courseId);

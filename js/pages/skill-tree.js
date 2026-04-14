@@ -47,7 +47,7 @@ export function renderSkillTree(params, container) {
     </div>`;
 
   // Draw skill tree
-  fetch('/data/skill-tree.json')
+  fetch('data/skill-tree.json')
     .then(r => r.json())
     .then(data => {
       const svg = container.querySelector('svg');
