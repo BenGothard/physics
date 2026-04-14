@@ -19,24 +19,27 @@ const COURSES = [
     id: 'mechanics',
     title: 'Classical Mechanics',
     subtitle: 'Forces, Motion & Energy',
-    icon: '\u2699\ufe0f',
+    icon: '⚙️',
     color: 'var(--mechanics-color)',
+    modifier: 'mechanics',
     totalLessons: 21,
   },
   {
     id: 'electromagnetism',
     title: 'Electromagnetism',
     subtitle: 'Fields, Circuits & Waves',
-    icon: '\u26a1',
+    icon: '⚡',
     color: 'var(--em-color)',
+    modifier: 'em',
     totalLessons: 20,
   },
   {
     id: 'waves-quantum',
     title: 'Waves & Quantum',
     subtitle: 'Oscillations to Uncertainty',
-    icon: '\ud83c\udf0a',
+    icon: '🌊',
     color: 'var(--waves-color)',
+    modifier: 'waves',
     totalLessons: 15,
   },
 ];
@@ -66,11 +69,6 @@ function getDailyChallenge() {
 /*  Render                                                             */
 /* ------------------------------------------------------------------ */
 
-/**
- * Render the dashboard hub world.
- * @param {Object} params  Route params (unused for dashboard)
- * @param {HTMLElement} container  The #content element
- */
 export function renderDashboard(params, container) {
   const xp = store.get('player.xp') || 0;
   const progress = getLevelProgress(xp);
@@ -90,7 +88,7 @@ export function renderDashboard(params, container) {
 
   const challenge = getDailyChallenge();
 
-  // Build course cards
+  /* Build realm cards — each is a full <a> so the whole card is clickable */
   const courseCardsHTML = COURSES.map((course) => {
     const completed = getCourseProgress(course.id);
     const pctDone = course.totalLessons > 0
@@ -99,39 +97,71 @@ export function renderDashboard(params, container) {
     const started = completed > 0;
 
     return `
-      <div class="course-realm-card" data-course="${course.id}" style="--course-color: ${course.color};">
-        <div class="course-realm-card__icon">${course.icon}</div>
-        <div class="course-realm-card__info">
-          <h3 class="course-realm-card__title">${course.title}</h3>
-          <p class="course-realm-card__subtitle">${course.subtitle}</p>
-          <div class="progress-bar" style="margin-top: 12px;">
-            <div class="progress-bar__fill" style="width: ${pctDone}%; background: ${course.color};"></div>
+      <a href="#/courses/${course.id}" class="realm-card realm-card--${course.modifier}">
+        <div class="realm-card__icon">${course.icon}</div>
+        <div class="realm-card__name">${course.title}</div>
+        <div class="realm-card__description">${course.subtitle}</div>
+        <div class="realm-card__progress">
+          <div class="realm-card__progress-header">
+            <span>${completed} / ${course.totalLessons} lessons</span>
+            <span>${pctDone}%</span>
           </div>
-          <p class="course-realm-card__progress">${completed} / ${course.totalLessons} lessons \u2022 ${pctDone}%</p>
+          <div class="progress-bar progress-bar--sm">
+            <div class="progress-bar__fill" style="width: ${pctDone}%;"></div>
+          </div>
         </div>
-        <button class="btn btn--primary btn--sm course-realm-card__btn">${started ? 'Continue' : 'Start'}</button>
-      </div>`;
+        <div class="realm-card__cta">
+          <span class="btn btn--primary btn--sm" aria-hidden="true">
+            ${started ? 'Continue →' : 'Start →'}
+          </span>
+        </div>
+      </a>`;
   }).join('');
 
-  // Streak flame size
-  const flameClass = streak >= 15 ? 'streak--inferno' : streak >= 7 ? 'streak--large' : streak >= 4 ? 'streak--medium' : 'streak--small';
+  /* Streak flame intensity */
+  const flameClass = streak >= 15 ? 'streak--inferno'
+    : streak >= 7 ? 'streak--large'
+    : streak >= 4 ? 'streak--medium'
+    : 'streak--small';
+
+  /* Next streak milestone */
+  const nextMilestone = streak < 7 ? 7 : streak < 14 ? 14 : streak < 30 ? 30 : 100;
 
   container.innerHTML = `
     <div class="dashboard dashboard--grid animate-fade-in">
 
       <!-- Hero Section -->
       <div class="hero-section">
-        <div class="hero-section__avatar">
-          <div class="hero-section__level-badge">${level}</div>
+        <div class="hero-avatar">
+          <div class="hero-avatar__image">⚛</div>
+          <div class="hero-avatar__level">${level}</div>
         </div>
-        <div class="hero-section__info">
-          <h1 class="hero-section__greeting">Welcome back, ${playerName}</h1>
-          <p class="hero-section__title">${title}</p>
-          <div class="hero-section__xp-bar">
-            <div class="progress-bar progress-bar--lg">
-              <div class="progress-bar__fill progress-bar__fill--xp" style="width: ${pct}%;"></div>
+        <div class="hero-info">
+          <div class="hero-info__greeting">Welcome back</div>
+          <h1 class="hero-info__name">${playerName}</h1>
+          <div class="hero-info__title"><span>✦</span> ${title}</div>
+          <div class="hero-xp">
+            <div class="hero-xp__header">
+              <span class="hero-xp__label">Level ${level}</span>
+              <span class="hero-xp__value">${formatNumber(xp)} XP &bull; ${pct}% to next</span>
             </div>
-            <p class="hero-section__xp-text">Level ${level} \u2022 ${formatNumber(xp)} XP \u2022 ${pct}% to next level</p>
+            <div class="progress-bar">
+              <div class="progress-bar__fill progress-bar__fill--gold" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat__value">${streak}</div>
+              <div class="hero-stat__label">Day Streak</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat__value">${stats.quizzes}</div>
+              <div class="hero-stat__label">Quizzes</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat__value">${stats.bosses}</div>
+              <div class="hero-stat__label">Bosses</div>
+            </div>
           </div>
         </div>
       </div>
@@ -145,34 +175,37 @@ export function renderDashboard(params, container) {
       </div>
 
       <!-- Streak Card -->
-      <div class="streak-card card">
-        <div class="streak-card__flame ${flameClass}">\ud83d\udd25</div>
-        <div class="streak-card__info">
-          <h3 class="streak-card__count">${streak} Day Streak</h3>
-          <p class="streak-card__longest">Longest: ${longestStreak} days</p>
-          ${streak >= 5 ? `<p class="streak-card__next">Next milestone: ${streak < 7 ? '7' : streak < 14 ? '14' : streak < 30 ? '30' : '100'} days</p>` : ''}
+      <div class="streak-card">
+        <div class="streak-flame ${flameClass}">🔥</div>
+        <div class="streak-info">
+          <div class="streak-info__count">${streak}</div>
+          <div class="streak-info__label">Day Streak</div>
+          <div class="streak-info__sub">Best: ${longestStreak} days</div>
+          ${streak > 0 ? `<div class="streak-info__next">Next milestone: ${nextMilestone} days</div>` : ''}
         </div>
       </div>
 
       <!-- Daily Challenge Card -->
-      <div class="daily-challenge-card card">
-        <div class="daily-challenge-card__header">
-          <span class="daily-challenge-card__badge">${challenge.completed ? '\u2705' : '\u2728'}</span>
-          <h3>Daily Challenge</h3>
-        </div>
-        <p class="daily-challenge-card__type">${challenge.type}</p>
-        <p class="daily-challenge-card__reward">+${XP_REWARDS.daily_challenge} XP</p>
+      <div class="daily-challenge-card">
+        <span class="daily-challenge-card__badge">${challenge.completed ? '✅' : '✨'}</span>
+        <div class="daily-challenge-card__icon">🎯</div>
+        <div class="daily-challenge-card__title">Daily Challenge</div>
+        <div class="daily-challenge-card__description">${challenge.type}</div>
+        <div class="daily-challenge-card__reward">⚡ +${XP_REWARDS.daily_challenge} XP</div>
         ${challenge.completed
-          ? '<p class="daily-challenge-card__done">Completed today!</p>'
-          : '<button class="btn btn--secondary btn--sm daily-challenge-btn">Start Challenge</button>'
+          ? '<p class="daily-challenge-card__done">✓ Completed today!</p>'
+          : '<button class="btn btn--secondary btn--sm daily-challenge-btn" type="button">Start Challenge</button>'
         }
       </div>
 
       <!-- Quick Resume -->
-      <div class="quick-resume card">
-        <h3>Quick Resume</h3>
-        <p class="quick-resume__text">Pick up where you left off</p>
-        <a href="#/courses" class="btn btn--ghost btn--sm">Browse Courses</a>
+      <div class="quick-resume">
+        <div class="quick-resume__eyebrow">Continue Learning</div>
+        <div class="quick-resume__title">Browse Courses</div>
+        <div class="quick-resume__subtitle">Pick up where you left off</div>
+        <a href="#/courses" class="btn btn--success btn--sm quick-resume__btn">
+          View All Courses →
+        </a>
       </div>
 
       <!-- Stats Overview -->
@@ -197,10 +230,10 @@ export function renderDashboard(params, container) {
           </div>
         </div>
       </div>
+
     </div>
   `;
 
-  // Attach event listeners
   attachDashboardEvents(container);
 }
 
@@ -209,20 +242,10 @@ export function renderDashboard(params, container) {
 /* ------------------------------------------------------------------ */
 
 function attachDashboardEvents(container) {
-  // Course cards: navigate to course
-  container.querySelectorAll('.course-realm-card').forEach((card) => {
-    card.addEventListener('click', () => {
-      const courseId = card.dataset.course;
-      soundManager.play('click');
-      window.location.hash = `#/courses/${courseId}`;
-    });
-  });
-
-  // Daily challenge button
+  /* Daily challenge button */
   const challengeBtn = container.querySelector('.daily-challenge-btn');
   if (challengeBtn) {
-    challengeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
+    challengeBtn.addEventListener('click', () => {
       soundManager.play('click');
       window.location.hash = '#/challenges';
     });

@@ -4,77 +4,134 @@
 import store from '../store.js';
 import soundManager from '../sound.js';
 
-const COURSES_DATA = {
-  mechanics: { title: 'Classical Mechanics', units: 4, icon: '⚙️' },
-  electromagnetism: { title: 'Electromagnetism', units: 4, icon: '⚡' },
-  'waves-quantum': { title: 'Waves & Quantum', units: 3, icon: '🌊' }
+const COURSES_META = {
+  mechanics: { title: 'Classical Mechanics', icon: '⚙️', color: 'var(--mechanics-color)' },
+  electromagnetism: { title: 'Electromagnetism', icon: '⚡', color: 'var(--em-color)' },
+  'waves-quantum': { title: 'Waves & Quantum', icon: '🌊', color: 'var(--waves-color)' },
 };
 
 export function renderCourseOverview(params, container) {
   const { courseId } = params;
-  const course = COURSES_DATA[courseId];
-  if (!course) {
-    container.innerHTML = '<p>Course not found</p>';
+  const meta = COURSES_META[courseId];
+
+  if (!meta) {
+    container.innerHTML = '<div class="page"><p>Course not found.</p></div>';
     return;
   }
 
-  // Fetch courses.json to get the structure
+  /* Show loading skeleton while fetching */
+  container.innerHTML = `
+    <div class="page animate-fade-in">
+      <div class="course-overview-header">
+        <a href="#/courses" class="btn btn--ghost btn--sm">← Back to Courses</a>
+        <h1>${meta.icon} ${meta.title}</h1>
+      </div>
+      <div class="course-overview-loading">
+        <div class="skeleton skeleton--title"></div>
+        <div class="skeleton skeleton--text"></div>
+        <div class="skeleton skeleton--text"></div>
+      </div>
+    </div>`;
+
   fetch('data/courses.json')
-    .then(r => r.json())
-    .then(data => {
-      const courseData = data.courses.find(c => c.id === courseId);
+    .then((r) => r.json())
+    .then((data) => {
+      const courseData = data.courses.find((c) => c.id === courseId);
       if (!courseData) {
-        container.innerHTML = '<p>Course data not found</p>';
+        container.innerHTML = '<div class="page"><p>Course data not found.</p></div>';
         return;
       }
 
-      const unitsHTML = courseData.units.map((unit) => {
-        const lessonsHTML = unit.lessons.map((lesson) => {
-          const watched = store.get(`courses.${courseId}.lectures.${lesson.id}.watched`) || false;
-          const checkmark = watched ? '✓' : '○';
-          return `
-            <div class="lesson-item ${watched ? 'lesson-item--complete' : ''}" data-lesson="${lesson.id}">
-              <span class="lesson-item__check">${checkmark}</span>
-              <div class="lesson-item__info">
-                <p class="lesson-item__title">${lesson.title}</p>
-                <p class="lesson-item__meta">Lewin L${lesson.lewinLecture} • Feynman ${lesson.feynmanVolume}-${lesson.feynmanChapter}</p>
-              </div>
-            </div>`;
-        }).join('');
+      /* Total progress across all units */
+      const totalLessons = courseData.units.reduce((s, u) => s + u.lessons.length, 0);
+      const totalDone = courseData.units.reduce((s, u) =>
+        s + u.lessons.filter((l) => store.get(`courses.${courseId}.lectures.${l.id}.watched`)).length, 0);
+      const overallPct = totalLessons > 0 ? Math.round((totalDone / totalLessons) * 100) : 0;
 
-        const completed = unit.lessons.filter(l => store.get(`courses.${courseId}.lectures.${l.id}.watched`)).length;
+      const unitsHTML = courseData.units.map((unit, unitIdx) => {
+        const completed = unit.lessons.filter((l) =>
+          store.get(`courses.${courseId}.lectures.${l.id}.watched`)
+        ).length;
         const pct = Math.round((completed / unit.lessons.length) * 100);
 
+        const lessonsHTML = unit.lessons.map((lesson) => {
+          const watched = store.get(`courses.${courseId}.lectures.${lesson.id}.watched`) || false;
+          return `
+            <button class="lesson-item ${watched ? 'lesson-item--complete' : ''}"
+                    data-lesson="${lesson.id}" type="button">
+              <span class="lesson-item__check" aria-hidden="true">${watched ? '✓' : '○'}</span>
+              <div class="lesson-item__info">
+                <span class="lesson-item__title">${lesson.title}</span>
+                <span class="lesson-item__meta">
+                  Lewin L${lesson.lewinLecture}
+                  &bull;
+                  Feynman Vol.&thinsp;${lesson.feynmanVolume} Ch.&thinsp;${lesson.feynmanChapter}
+                </span>
+              </div>
+              <span class="lesson-item__arrow" aria-hidden="true">›</span>
+            </button>`;
+        }).join('');
+
         return `
-          <div class="unit">
-            <div class="unit__header">
-              <h3>${unit.title}</h3>
-              <span class="unit__progress">${completed}/${unit.lessons.length}</span>
+          <div class="unit-card">
+            <div class="unit-card__header">
+              <div>
+                <span class="unit-card__number">Unit ${unitIdx + 1}</span>
+                <h3 class="unit-card__title">${unit.title}</h3>
+              </div>
+              <span class="unit-card__progress badge badge--blue">${completed}/${unit.lessons.length}</span>
             </div>
-            <div class="progress-bar" style="margin-bottom: 16px;">
+            <div class="progress-bar progress-bar--sm" style="margin-bottom: var(--space-md);">
               <div class="progress-bar__fill" style="width: ${pct}%;"></div>
             </div>
             <div class="lessons-list">${lessonsHTML}</div>
-            ${unit.bossId ? `<button class="btn btn--danger btn--sm unit__boss" data-boss="${unit.bossId}">⚔️ ${unit.bossName}</button>` : ''}
+            ${unit.bossId ? `
+              <button class="btn btn--danger unit-boss-btn" data-boss="${unit.bossId}" type="button">
+                ⚔️ Face the Boss — ${unit.bossName}
+              </button>` : ''}
           </div>`;
       }).join('');
 
       container.innerHTML = `
         <div class="page animate-fade-in">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 32px;">
-            <a href="#/courses" class="btn btn--ghost btn--sm">← Back</a>
-            <h1>${course.icon} ${courseData.title}</h1>
+          <div class="course-overview-header">
+            <a href="#/courses" class="btn btn--ghost btn--sm">← Back to Courses</a>
+            <div>
+              <h1>${meta.icon} ${courseData.title}</h1>
+              <p class="course-overview-subtitle">${courseData.subtitle}</p>
+            </div>
           </div>
-          ${unitsHTML}
+
+          <div class="course-overview-progress-bar">
+            <div class="course-overview-progress-bar__header">
+              <span>Overall Progress</span>
+              <span>${totalDone} / ${totalLessons} lessons &bull; ${overallPct}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar__fill" style="width: ${overallPct}%;"></div>
+            </div>
+          </div>
+
+          <div class="units-list">${unitsHTML}</div>
         </div>`;
 
-      // Attach event listeners
-      container.querySelectorAll('.lesson-item').forEach(item => {
-        item.addEventListener('click', () => {
+      /* Lesson click handlers */
+      container.querySelectorAll('.lesson-item').forEach((btn) => {
+        btn.addEventListener('click', () => {
           soundManager.play('click');
-          const lessonId = item.dataset.lesson;
-          window.location.hash = `#/courses/${courseId}/${lessonId}`;
+          window.location.hash = `#/courses/${courseId}/${btn.dataset.lesson}`;
         });
       });
+
+      /* Boss battle click handlers */
+      container.querySelectorAll('.unit-boss-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          soundManager.play('click');
+          window.location.hash = `#/boss/${btn.dataset.boss}`;
+        });
+      });
+    })
+    .catch(() => {
+      container.innerHTML = '<div class="page"><p>Failed to load course data.</p></div>';
     });
 }

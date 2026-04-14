@@ -1,162 +1,283 @@
 /**
  * lesson.js — Individual lesson with video, reading, simulation, quiz
+ *
+ * Tabs: Video (Lewin lecture), Reading (Feynman), Simulation, Quiz
+ * Completion of each section awards XP and updates the progress tracker.
  */
 import store from '../store.js';
 import { awardXP } from '../xp.js';
 import soundManager from '../sound.js';
 
-const FEYNMAN_URLS = {
-  'I': 'https://www.feynmanlectures.caltech.edu/I_{chapter}.html',
-  'II': 'https://www.feynmanlectures.caltech.edu/II_{chapter}.html',
-  'III': 'https://www.feynmanlectures.caltech.edu/III_{chapter}.html',
+/* ------------------------------------------------------------------ */
+/*  External resource helpers                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Feynman Lectures Online (Caltech) — chapter numbers zero-padded to 2 digits.
+ */
+function feynmanUrl(volume, chapter) {
+  return `https://www.feynmanlectures.caltech.edu/${volume}_${String(chapter).padStart(2, '0')}.html`;
+}
+
+/**
+ * YouTube search URL for a specific Walter Lewin lecture.
+ * Linking to a search is more reliable than hard-coding video IDs.
+ */
+function lewinSearchUrl(lectureNum, courseTitle) {
+  const q = encodeURIComponent(`Walter Lewin ${courseTitle} Lecture ${lectureNum} MIT`);
+  return `https://www.youtube.com/results?search_query=${q}`;
+}
+
+/**
+ * MIT OCW course pages for each course ID.
+ */
+const OCW_URLS = {
+  mechanics:       'https://ocw.mit.edu/courses/8-01sc-physics-i-classical-mechanics-fall-2016/',
+  electromagnetism:'https://ocw.mit.edu/courses/8-02-physics-ii-electricity-and-magnetism-spring-2002/',
+  'waves-quantum': 'https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/',
 };
+
+/* ------------------------------------------------------------------ */
+/*  Render                                                             */
+/* ------------------------------------------------------------------ */
 
 export function renderLesson(params, container) {
   const { courseId, lessonId } = params;
 
+  /* Loading state */
+  container.innerHTML = `
+    <div class="page">
+      <div class="lesson-header">
+        <a href="#/courses/${courseId}" class="btn btn--ghost btn--sm">← Back to Course</a>
+      </div>
+      <div style="padding: var(--space-2xl); text-align: center; color: var(--text-secondary);">
+        Loading lesson…
+      </div>
+    </div>`;
+
   fetch('data/courses.json')
-    .then(r => r.json())
-    .then(data => {
-      const courseData = data.courses.find(c => c.id === courseId);
+    .then((r) => r.json())
+    .then((data) => {
+      const courseData = data.courses.find((c) => c.id === courseId);
       if (!courseData) {
-        container.innerHTML = '<p>Course not found</p>';
+        container.innerHTML = '<div class="page"><p>Course not found.</p></div>';
         return;
       }
 
       let lesson = null;
+      let unitData = null;
       for (const unit of courseData.units) {
-        const found = unit.lessons.find(l => l.id === lessonId);
-        if (found) {
-          lesson = { ...found, unit };
-          break;
-        }
+        const found = unit.lessons.find((l) => l.id === lessonId);
+        if (found) { lesson = found; unitData = unit; break; }
       }
 
       if (!lesson) {
-        container.innerHTML = '<p>Lesson not found</p>';
+        container.innerHTML = '<div class="page"><p>Lesson not found.</p></div>';
         return;
       }
 
-      const feynmanUrl = FEYNMAN_URLS[lesson.feynmanVolume].replace('{chapter}', String(lesson.feynmanChapter).padStart(2, '0'));
-      const watched = store.get(`courses.${courseId}.lectures.${lessonId}.watched`) || false;
-      const readCompleted = store.get(`courses.${courseId}.readings.${lessonId}.read`) || false;
+      /* Completion state */
+      const watched     = store.get(`courses.${courseId}.lectures.${lessonId}.watched`)    || false;
+      const readDone    = store.get(`courses.${courseId}.readings.${lessonId}.read`)        || false;
+      const quizDone    = store.get(`courses.${courseId}.quizzes.${lessonId}.completed`)    || false;
+      const simDone     = lesson.simulationId
+        ? store.get(`courses.${courseId}.simulations.${lessonId}.completed`) || false
+        : null;
 
-      const lectureHTML = lesson.lewinLecture
-        ? `<div class="tab-pane" id="tab-video">
-             <div class="video-container">
-               <iframe width="100%" height="600" src="https://www.youtube.com/embed/placeholder" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-             </div>
-             <p style="margin-top: 16px; color: var(--text-secondary);">Walter Lewin Lecture ${lesson.lewinLecture}</p>
-             <button class="btn btn--primary btn--sm mark-complete-btn" data-type="lecture" ${watched ? 'disabled' : ''}>
-               ${watched ? '✓ Watched' : 'Mark as Watched'}
-             </button>
-           </div>`
-        : '';
+      /* Tabs to show */
+      const tabs = [];
+      if (lesson.lewinLecture) tabs.push({ id: 'video',      label: '🎥 Video',      done: watched });
+      tabs.push(                          { id: 'reading',   label: '📖 Reading',     done: readDone });
+      if (lesson.simulationId) tabs.push( { id: 'simulation',label: '🔬 Simulation',  done: simDone === true });
+      tabs.push(                          { id: 'quiz',      label: '📝 Quiz',        done: quizDone });
 
-      const readingHTML = `<div class="tab-pane" id="tab-reading">
-        <div class="reading-card card">
-          <h3>📖 Feynman Lectures Volume ${lesson.feynmanVolume}</h3>
-          <p>Chapter ${lesson.feynmanChapter}</p>
-          <a href="${feynmanUrl}" target="_blank" class="btn btn--secondary btn--sm" style="margin-top: 12px;">
-            Open Feynman Lecture ↗
-          </a>
-        </div>
-        <button class="btn btn--primary btn--sm mark-complete-btn" data-type="reading" ${readCompleted ? 'disabled' : ''}>
-          ${readCompleted ? '✓ Read' : 'Mark as Read'}
-        </button>
-      </div>`;
+      /* ---- Build tab HTML ---- */
 
-      const simHTML = lesson.simulationId
-        ? `<div class="tab-pane" id="tab-simulation">
-             <p style="padding: 24px; text-align: center; color: var(--text-secondary);">
-               🔬 Simulation: ${lesson.simulationId} (coming soon)
-             </p>
-           </div>`
-        : '';
-
-      const quizHTML = `<div class="tab-pane" id="tab-quiz">
-        <p style="padding: 24px; text-align: center; color: var(--text-secondary);">
-          📝 Quiz loading...
-        </p>
-      </div>`;
-
-      container.innerHTML = `
-        <div class="page lesson-page animate-fade-in">
-          <div class="lesson-page__header">
-            <a href="#/courses/${courseId}" class="btn btn--ghost btn--sm">← Back</a>
-            <h1>${lesson.title}</h1>
-            <p style="color: var(--text-secondary);">${lesson.unit.title}</p>
-          </div>
-
-          <div class="lesson-progress">
-            <div class="lesson-progress-item ${watched ? 'complete' : ''}">
-              <span class="icon">🎥</span>
-              <span>Video</span>
-            </div>
-            <div class="lesson-progress-item ${readCompleted ? 'complete' : ''}">
-              <span class="icon">📖</span>
-              <span>Reading</span>
-            </div>
-            ${lesson.simulationId ? `
-              <div class="lesson-progress-item">
-                <span class="icon">🔬</span>
-                <span>Simulation</span>
+      /* Video tab */
+      const videoTabHTML = lesson.lewinLecture ? `
+        <div class="lesson-tab-content" id="pane-video" hidden>
+          <div class="reading-section">
+            <div class="reading-section__icon">🎥</div>
+            <div class="reading-section__content">
+              <div class="reading-section__title">
+                Walter Lewin — Lecture ${lesson.lewinLecture}
               </div>
-            ` : ''}
-            <div class="lesson-progress-item">
-              <span class="icon">📝</span>
-              <span>Quiz</span>
+              <div class="reading-section__description">
+                ${lesson.title}<br>
+                Watch the original MIT lecture by Professor Walter Lewin.
+                The video opens on YouTube — use the playlist to find the correct lecture number.
+              </div>
+              <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap; margin-top: var(--space-md);">
+                <a href="${lewinSearchUrl(lesson.lewinLecture, courseData.title)}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="btn btn--primary btn--sm">
+                  ▶ Watch on YouTube ↗
+                </a>
+                <a href="${OCW_URLS[courseId] || '#'}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="btn btn--secondary btn--sm">
+                  MIT OpenCourseWare ↗
+                </a>
+              </div>
             </div>
           </div>
-
-          <div class="lesson-tabs">
-            ${lectureHTML ? '<button class="lesson-tab active" data-tab="tab-video">Video</button>' : ''}
-            <button class="lesson-tab" data-tab="tab-reading">Reading</button>
-            ${lesson.simulationId ? '<button class="lesson-tab" data-tab="tab-simulation">Simulation</button>' : ''}
-            <button class="lesson-tab" data-tab="tab-quiz">Quiz</button>
+          <div style="margin-top: var(--space-lg);">
+            <button class="btn btn--success mark-complete-btn ${watched ? 'completed' : ''}"
+                    data-type="lecture" type="button" ${watched ? 'disabled' : ''}>
+              ${watched ? '✓ Marked as Watched' : 'Mark as Watched  (+100 XP)'}
+            </button>
           </div>
+        </div>` : '';
 
-          <div class="lesson-tabs__content">
-            ${lectureHTML}
-            ${readingHTML}
-            ${simHTML}
-            ${quizHTML}
+      /* Reading tab */
+      const readUrl = feynmanUrl(lesson.feynmanVolume, lesson.feynmanChapter);
+      const readingTabHTML = `
+        <div class="lesson-tab-content" id="pane-reading" hidden>
+          <div class="reading-section">
+            <div class="reading-section__icon">📖</div>
+            <div class="reading-section__content">
+              <div class="reading-section__title">
+                The Feynman Lectures on Physics — Volume ${lesson.feynmanVolume},
+                Chapter ${lesson.feynmanChapter}
+              </div>
+              <div class="reading-section__description">
+                Read the corresponding chapter from Richard Feynman's celebrated lecture series,
+                freely available online from Caltech.
+              </div>
+              <a href="${readUrl}" target="_blank" rel="noopener noreferrer"
+                 class="reading-section__link">
+                Open Feynman Lecture ↗
+              </a>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-lg);">
+            <button class="btn btn--success mark-complete-btn ${readDone ? 'completed' : ''}"
+                    data-type="reading" type="button" ${readDone ? 'disabled' : ''}>
+              ${readDone ? '✓ Marked as Read' : 'Mark as Read  (+100 XP)'}
+            </button>
           </div>
         </div>`;
 
-      // Tab switching
-      container.querySelectorAll('.lesson-tab').forEach(btn => {
+      /* Simulation tab */
+      const simTabHTML = lesson.simulationId ? `
+        <div class="lesson-tab-content" id="pane-simulation" hidden>
+          <div class="reading-section">
+            <div class="reading-section__icon">🔬</div>
+            <div class="reading-section__content">
+              <div class="reading-section__title">Interactive Simulation</div>
+              <div class="reading-section__description">
+                Simulation: <strong>${lesson.simulationId}</strong>
+              </div>
+              <a href="#/sandbox?sim=${lesson.simulationId}" class="btn btn--secondary btn--sm"
+                 style="margin-top: var(--space-md); display: inline-flex;">
+                Open in Sandbox →
+              </a>
+            </div>
+          </div>
+        </div>` : '';
+
+      /* Quiz tab */
+      const quizTabHTML = `
+        <div class="lesson-tab-content" id="pane-quiz" hidden>
+          <div class="reading-section">
+            <div class="reading-section__icon">📝</div>
+            <div class="reading-section__content">
+              <div class="reading-section__title">Quiz</div>
+              <div class="reading-section__description">
+                Test your understanding of <em>${lesson.title}</em>.
+              </div>
+              ${lesson.quizId ? `
+                <a href="#/quiz/${lesson.quizId}" class="btn btn--primary btn--sm"
+                   style="margin-top: var(--space-md); display: inline-flex;">
+                  Start Quiz →
+                </a>` : '<p style="color: var(--text-muted); margin-top: var(--space-sm);">No quiz for this lesson yet.</p>'}
+            </div>
+          </div>
+        </div>`;
+
+      /* ---- Tab buttons ---- */
+      const tabButtonsHTML = tabs.map((t, i) => `
+        <button class="lesson-tab${i === 0 ? ' active' : ''}"
+                data-pane="pane-${t.id}" type="button">
+          ${t.label}${t.done ? ' <span style="color:var(--accent-green)">✓</span>' : ''}
+        </button>`).join('');
+
+      /* ---- Progress tracker ---- */
+      const progressItems = tabs.map((t) => `
+        <div class="lesson-progress-item${t.done ? ' completed' : ''}">
+          <div class="lesson-progress-item__circle">${t.done ? '✓' : ''}</div>
+          <div class="lesson-progress-item__label">${t.label.replace(/^\S+\s/, '')}</div>
+        </div>`).join('');
+
+      /* ---- Full page ---- */
+      container.innerHTML = `
+        <div class="page lesson-page animate-fade-in">
+          <div class="lesson-header">
+            <div class="lesson-header__breadcrumb">
+              <a href="#/courses">Courses</a>
+              <span>/</span>
+              <a href="#/courses/${courseId}">${courseData.title}</a>
+              <span>/</span>
+              <span>${unitData.title}</span>
+            </div>
+            <h1 class="lesson-header__title">${lesson.title}</h1>
+            <div class="lesson-header__unit">
+              <span class="lesson-header__unit-badge"></span>
+              ${unitData.title}
+            </div>
+          </div>
+
+          <div class="lesson-progress">${progressItems}</div>
+
+          <div class="lesson-tabs">${tabButtonsHTML}</div>
+
+          <div class="lesson-tabs__content">
+            ${videoTabHTML}
+            ${readingTabHTML}
+            ${simTabHTML}
+            ${quizTabHTML}
+          </div>
+        </div>`;
+
+      /* Show first tab */
+      const firstPane = container.querySelector('.lesson-tab-content');
+      if (firstPane) firstPane.removeAttribute('hidden');
+
+      /* Tab switching */
+      container.querySelectorAll('.lesson-tab').forEach((btn) => {
         btn.addEventListener('click', () => {
-          const tabId = btn.dataset.tab;
-          container.querySelectorAll('.lesson-tab').forEach(b => b.classList.remove('active'));
-          container.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+          container.querySelectorAll('.lesson-tab').forEach((b) => b.classList.remove('active'));
+          container.querySelectorAll('.lesson-tab-content').forEach((p) => p.setAttribute('hidden', ''));
           btn.classList.add('active');
-          document.getElementById(tabId).style.display = 'block';
+          const pane = document.getElementById(btn.dataset.pane);
+          if (pane) pane.removeAttribute('hidden');
+          soundManager.play('click');
         });
       });
 
-      // Mark complete buttons
-      container.querySelectorAll('.mark-complete-btn').forEach(btn => {
+      /* Mark-complete buttons */
+      container.querySelectorAll('.mark-complete-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
           const type = btn.dataset.type;
-          if (type === 'lecture') {
+          if (type === 'lecture' && !watched) {
             store.set(`courses.${courseId}.lectures.${lessonId}.watched`, true);
             awardXP('lecture');
             btn.disabled = true;
-            btn.textContent = '✓ Watched';
+            btn.textContent = '✓ Marked as Watched';
+            btn.classList.add('completed');
             soundManager.play('correct');
-          } else if (type === 'reading') {
+          } else if (type === 'reading' && !readDone) {
             store.set(`courses.${courseId}.readings.${lessonId}.read`, true);
             awardXP('reading');
             btn.disabled = true;
-            btn.textContent = '✓ Read';
+            btn.textContent = '✓ Marked as Read';
+            btn.classList.add('completed');
             soundManager.play('correct');
           }
         });
       });
-
-      // Show first tab by default
-      const firstTab = container.querySelector('.lesson-tab');
-      if (firstTab) firstTab.click();
+    })
+    .catch(() => {
+      container.innerHTML = '<div class="page"><p>Failed to load lesson data.</p></div>';
     });
 }
