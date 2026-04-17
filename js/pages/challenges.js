@@ -2,7 +2,9 @@
  * challenges.js — Daily challenges page
  */
 import { generateDailyChallenge } from '../daily-challenge.js';
+import { awardXP } from '../xp.js';
 import store from '../store.js';
+import soundManager from '../sound.js';
 
 export function renderChallenges(params, container) {
   const challenge = generateDailyChallenge();
@@ -20,11 +22,26 @@ export function renderChallenges(params, container) {
 
         ${completed
           ? '<p style="color: var(--accent-green); font-size: 1.2rem; font-weight: bold;">✓ Completed!</p>'
-          : '<button class="btn btn--primary" onclick="window.location.hash=\'#/sandbox\'">Start Challenge</button>'
+          : `<button class="btn btn--primary" id="start-challenge-btn" type="button">Start Challenge</button>`
         }
       </div>
 
       <h2 style="margin-top: 40px;">Your Challenge History</h2>
       <p style="color: var(--text-secondary);">Track your daily challenge progress</p>
     </div>`;
+
+  const startBtn = container.querySelector('#start-challenge-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      soundManager.play('click');
+      // Mark challenge complete and award XP
+      store.set(`dailyChallenges.${challenge.date}`, { completed: true });
+      awardXP('daily_challenge');
+      if (challenge.quizId) {
+        window.location.hash = `#/quiz/${challenge.quizId}`;
+      } else {
+        window.location.hash = '#/sandbox';
+      }
+    });
+  }
 }
