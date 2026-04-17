@@ -2,10 +2,11 @@
  * sw.js — Service Worker for offline support and caching
  */
 
-const CACHE_NAME = 'physicsquest-v1';
+const CACHE_NAME = 'physicsquest-v2';
 const urlsToCache = [
   './',
   './index.html',
+  './manifest.json',
   './css/main.css',
   './css/components.css',
   './css/animations.css',
@@ -23,10 +24,31 @@ const urlsToCache = [
   './js/sound.js',
   './js/utils.js',
   './js/app.js',
+  './js/achievements.js',
+  './js/daily-challenge.js',
+  './js/streak.js',
+  './js/components/nav.js',
+  './js/pages/dashboard.js',
+  './js/pages/course-list.js',
+  './js/pages/course-overview.js',
+  './js/pages/lesson.js',
+  './js/pages/quiz-page.js',
+  './js/pages/profile.js',
+  './js/pages/skill-tree.js',
+  './js/pages/boss-battle.js',
+  './js/pages/sandbox.js',
+  './js/pages/challenges.js',
+  './js/pages/leaderboard.js',
+  './js/pages/settings.js',
+  './js/simulations/sim-base.js',
+  './js/simulations/projectile.js',
+  './js/simulations/pendulum.js',
+  './js/simulations/spring.js',
   './data/courses.json',
   './data/levels.json',
   './data/achievements.json',
   './data/skill-tree.json',
+  './data/quizzes/mechanics/kinematics.json',
 ];
 
 // Install event
@@ -64,8 +86,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Skip external requests (YouTube, etc.)
-  if (event.request.url.includes('youtube.com') || event.request.url.includes('feynmanlectures.caltech.edu')) {
+  // Only cache same-origin http/https requests — fixes chrome-extension:// errors
+  const url = new URL(event.request.url);
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return;
+  }
+  if (url.origin !== self.location.origin) {
     return;
   }
 
@@ -87,7 +113,7 @@ self.addEventListener('fetch', (event) => {
 
           // Cache successful responses
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
+            cache.put(event.request, responseToCache).catch(() => {});
           });
 
           return response;

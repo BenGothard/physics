@@ -138,8 +138,13 @@ export function renderBossBattle(params, container) {
           <p style="color: var(--xp-gold); font-size: 1.2rem;">+${Math.round(500 + (finalScore / totalQuestions) * 200)} XP</p>
         </div>
 
-        <button class="btn btn--primary" style="margin-top: 32px;" onclick="window.location.hash='#/skill-tree'">Back to Skill Tree</button>
+        <button class="btn btn--primary" id="victory-back-btn" style="margin-top: 32px;">Back to Skill Tree</button>
       </div>`;
+
+    document.getElementById('victory-back-btn').addEventListener('click', () => {
+      soundManager.play('click');
+      window.location.hash = '#/skill-tree';
+    });
   };
 
   const renderDefeat = () => {
@@ -148,9 +153,18 @@ export function renderBossBattle(params, container) {
         <h1 style="font-size: 3rem; color: var(--accent-red); margin-bottom: 16px;">💔 DEFEATED</h1>
         <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 32px;">You were defeated by ${boss.name}</p>
 
-        <button class="btn btn--primary" style="margin-top: 24px;" onclick="window.location.hash='#/boss/${bossId}'">Try Again</button>
-        <button class="btn btn--ghost" style="margin-top: 12px;" onclick="window.location.hash='#/skill-tree'">Back to Skill Tree</button>
+        <button class="btn btn--primary" id="defeat-retry-btn" style="margin-top: 24px;">Try Again</button>
+        <button class="btn btn--ghost" id="defeat-back-btn" style="margin-top: 12px;">Back to Skill Tree</button>
       </div>`;
+
+    document.getElementById('defeat-retry-btn').addEventListener('click', () => {
+      soundManager.play('click');
+      window.location.hash = `#/boss/${bossId}`;
+    });
+    document.getElementById('defeat-back-btn').addEventListener('click', () => {
+      soundManager.play('click');
+      window.location.hash = '#/skill-tree';
+    });
   };
 
   renderArena();

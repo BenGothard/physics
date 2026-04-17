@@ -12,28 +12,17 @@ import { renderDashboard } from './pages/dashboard.js';
 import { renderCourseList } from './pages/course-list.js';
 import { renderCourseOverview } from './pages/course-overview.js';
 import { renderLesson } from './pages/lesson.js';
+import { renderQuiz } from './pages/quiz-page.js';
+import { renderProfile } from './pages/profile.js';
 import { renderSkillTree } from './pages/skill-tree.js';
 import { renderBossBattle } from './pages/boss-battle.js';
 import { renderSandbox } from './pages/sandbox.js';
+import { renderChallenges } from './pages/challenges.js';
+import { renderLeaderboard } from './pages/leaderboard.js';
 import { renderSettings } from './pages/settings.js';
-import { getLevelProgress, getLevelTitle, awardXP } from './xp.js';
-import { dateToKey, isToday } from './utils.js';
+import { awardXP } from './xp.js';
+import { dateToKey } from './utils.js';
 import soundManager from './sound.js';
-
-/* ------------------------------------------------------------------ */
-/*  Stub page renderer for pages not yet implemented                   */
-/* ------------------------------------------------------------------ */
-
-function stubPage(name) {
-  return (params, container) => {
-    container.innerHTML = `
-      <div class="page animate-fade-in" style="text-align:center; padding: 60px 20px;">
-        <h1 style="font-size: 2rem; margin-bottom: 16px;">${name}</h1>
-        <p style="color: var(--text-secondary);">Coming soon...</p>
-        <a href="#/" class="btn btn--primary" style="margin-top: 24px;">Back to Dashboard</a>
-      </div>`;
-  };
-}
 
 /* ------------------------------------------------------------------ */
 /*  Streak helpers                                                     */
@@ -136,13 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
     .on('#/courses', renderCourseList)
     .on('#/courses/:courseId', renderCourseOverview)
     .on('#/courses/:courseId/:lessonId', renderLesson)
-    .on('#/quiz/:quizId', stubPage('Quiz'))
-    .on('#/profile', stubPage('Profile'))
+    .on('#/quiz/:quizId', renderQuiz)
+    .on('#/profile', renderProfile)
     .on('#/skill-tree', renderSkillTree)
     .on('#/boss/:bossId', renderBossBattle)
-    .on('#/challenges', stubPage('Challenges'))
+    .on('#/challenges', renderChallenges)
     .on('#/sandbox', renderSandbox)
-    .on('#/leaderboard', stubPage('Leaderboard'))
+    .on('#/sandbox/:simId', renderSandbox)
+    .on('#/leaderboard', renderLeaderboard)
     .on('#/settings', renderSettings);
 
   // 5. 404 handler

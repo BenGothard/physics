@@ -168,7 +168,7 @@ export function renderLesson(params, container) {
               <div class="reading-section__description">
                 Simulation: <strong>${lesson.simulationId}</strong>
               </div>
-              <a href="#/sandbox?sim=${lesson.simulationId}" class="btn btn--secondary btn--sm"
+              <a href="#/sandbox/${lesson.simulationId}" class="btn btn--secondary btn--sm"
                  style="margin-top: var(--space-md); display: inline-flex;">
                 Open in Sandbox →
               </a>

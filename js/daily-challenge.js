@@ -20,21 +20,21 @@ export function generateDailyChallenge() {
   const random = seededRandom(seed);
 
   let description = '';
-  let quizId = null;
+  // Only link to quizzes that actually exist
+  let quizId = 'mech-kinematics';
 
   if (challenge.type === 'Quick Quiz') {
-    const courses = ['mechanics', 'electromagnetism', 'waves-quantum'];
-    const course = courses[Math.floor(random() * courses.length)];
-    quizId = `${course}-kinematics`;
-    description = `Complete a quick quiz on ${course}`;
+    description = 'Complete the kinematics quiz';
   } else if (challenge.type === 'Speed Run') {
-    description = 'Complete a quiz in under 2 minutes';
+    description = 'Complete the kinematics quiz in under 2 minutes';
   } else if (challenge.type === 'Experiment') {
-    const sims = ['projectile', 'spring', 'orbits', 'collisions', 'waves'];
+    const sims = ['projectile', 'spring', 'pendulum'];
     const sim = sims[Math.floor(random() * sims.length)];
     description = `Spend 10+ minutes in the ${sim} simulation`;
+    quizId = null;
   } else if (challenge.type === 'Reading') {
     description = 'Read one chapter from the Feynman Lectures';
+    quizId = null;
   } else {
     description = 'Solve a multi-step physics problem';
   }
